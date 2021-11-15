@@ -1,9 +1,16 @@
 from django.contrib import admin
-from .models import Candidate, Skill, Interview
+from .models import Candidate, Skill, Interview, CTC
 from django.utils.safestring import mark_safe
 
 
-# Register your models here.
+class CTCInline(admin.TabularInline):
+    model = CTC
+    extra = 0
+
+
+class InterviewInline(admin.TabularInline):
+    model = Interview
+    extra = 0
 
 
 @admin.register(Skill)
@@ -20,6 +27,8 @@ class CandidateAdmin(admin.ModelAdmin):
     list_filter = ('skills', 'status')
 
     list_editable = ('status',)
+
+    inlines = [CTCInline, InterviewInline]
 
 
 @admin.register(Interview)

@@ -53,6 +53,18 @@ class Candidate(models.Model):
         return self.full_name
 
 
+class CTC(models.Model):
+    candidate = models.ForeignKey(
+        Candidate, on_delete=models.CASCADE,
+        related_name='ctc',
+    )
+    current = models.IntegerField(default=0)
+    expected = models.IntegerField(default=0)
+    offered = models.IntegerField(default=0)
+    notice = models.CharField(max_length=100)
+    expected_doj = models.CharField(max_length=100)
+
+
 class Interview(models.Model):
     STATUS = (
         (2, "Selected"),
