@@ -1,0 +1,16 @@
+.idea/
+emails/
+media/
+*.pyc
+subl/
+collected_static/
+*.db
+nohup.out
+.env/
+manage_prod.py
+log/
+celerybeat-schedule
+*attlog*
+*.sql
+__pycache__
+*__pycache__*
