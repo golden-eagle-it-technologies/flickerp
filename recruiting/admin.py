@@ -48,7 +48,12 @@ class CandidateAdmin(admin.ModelAdmin):
 @admin.register(Interview)
 class InterviewAdmin(admin.ModelAdmin):
 
-    list_display = ('candidate', 'time', 'status', 'user', 'rating',)
+    list_display = ('candidate', 'view_cv_link', 'status', 'user', 'rating',)
     list_editable = ('status',)
     search_fields = ('candidate', 'remark')
     list_filter = ('status',)
+
+    def view_cv_link(self, obj):
+        return format_html('<a target="_blank" href="{}">{}</a>', obj.candidate.cv.url, obj.time.strftime('%d %b %H:%M'))
+
+    view_cv_link.short_description = "Time/CV"

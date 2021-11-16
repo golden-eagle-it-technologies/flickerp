@@ -2,6 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.db.models import Q
 from field_history.tracker import FieldHistoryTracker
+from flickerp.email_sender import send_sendgrid_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from model_utils import FieldTracker
+
 
 
 class Skill(models.Model):
@@ -24,7 +29,7 @@ class Candidate(models.Model):
         (1, "New"),
         (2, "In Process "),
         (3, "Selected for interview"),
-        (4, "Selected"),
+        (4, "Selected after Interviews"),
         (5, "Joined"),
         (6, "Reject CV"),
         (7, "Reject in interview"),
@@ -48,6 +53,7 @@ class Candidate(models.Model):
         related_name='candidate', null=True, blank=True)
 
     field_history = FieldHistoryTracker(['status'])
+    tracker = FieldTracker()
 
     def __str__(self):
         return self.full_name
@@ -86,6 +92,17 @@ class Interview(models.Model):
     remark = models.TextField("Put remark here", null=True, blank=True)
     rating = models.IntegerField("Rating out of 10", null=True, blank=True)
     experience = models.IntegerField("Evalution in year exp.", null=True, blank=True)
+    tracker = FieldTracker()
 
     def __str__(self):
         return self.candidate.full_name
+
+
+
+
+
+
+@receiver(post_save, sender=Candidate)
+def handle_new_job(sender,instance, **kwargs):
+    if instance.tracker.has_changed('status'):
+        send_sendgrid_mail(instance)
