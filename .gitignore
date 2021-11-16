@@ -14,3 +14,4 @@ celerybeat-schedule
 *.sql
 __pycache__
 *__pycache__*
+__pycache__/
