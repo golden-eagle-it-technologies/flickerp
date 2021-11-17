@@ -11,25 +11,28 @@ SENDGRID_API_KEY = settings.SENDGRID_API_KEY
 
 
 # template ids based on status of Candidate model. 
-TEMPLATE_IDS=(
-    (2, "d-f23e271c9aab4608a6b840007e813bd2"), # cv seelcted for interview
-    (4, "d-72adec37e43a498889c4466cd9de1ab4"),  #Selected after Interview
-    (6, "d-bd2c2416976048248ca42db3db675fc1"), #cv rejected by HR  without interview
-    (7, "d-a2701f97107943439be88084c1cb914f"), #Rejected after interview
+TEMPLATE_IDS = (
+    (2, "d-f23e271c9aab4608a6b840007e813bd2"),  # cv seelcted for interview
+    (4, "d-72adec37e43a498889c4466cd9de1ab4"),  # Selected after Interview
+    (6, "d-bd2c2416976048248ca42db3db675fc1"),  # cv rejected by HR  without interview
+    (7, "d-a2701f97107943439be88084c1cb914f"),  # Rejected after interview
 )
 
 TEMPLATE_IDS = dict(TEMPLATE_IDS)
- 
-def send_sendgrid_mail(obj,subject=None, status=None):
+
+
+def send_sendgrid_mail(obj, subject=None, status=None):
     if not TEMPLATE_IDS.get(obj.status, None):
         return False
-    
-    message = Mail(from_email=FROM_EMAIL,to_emails=[obj.email])
+    if not SENDGRID_API_KEY:
+        print("Email featue not work , please set sengrid api key")
+        return False
 
-    
+    message = Mail(from_email=FROM_EMAIL, to_emails=[obj.email])
+
     message.dynamic_template_data = {
         'Candidate_name': obj.full_name,
-        }
+    }
     message.template_id = TEMPLATE_IDS.get(obj.status)
 
     try:
