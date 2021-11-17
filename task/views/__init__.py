@@ -1,0 +1,12 @@
+from task.views.add_list import add_list  # noqa: F401
+from task.views.del_list import del_list  # noqa: F401
+from task.views.delete_task import delete_task  # noqa: F401
+from task.views.external_add import external_add  # noqa: F401
+from task.views.import_csv import import_csv  # noqa: F401
+from task.views.list_detail import list_detail  # noqa: F401
+from task.views.list_lists import list_lists  # noqa: F401
+from task.views.remove_attachment import remove_attachment  # noqa: F401
+from task.views.reorder_tasks import reorder_tasks  # noqa: F401
+from task.views.search import search  # noqa: F401
+from task.views.task_detail import task_detail  # noqa: F401
+from task.views.toggle_done import toggle_done  # noqa: F401

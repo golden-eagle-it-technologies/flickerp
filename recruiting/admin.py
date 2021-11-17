@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.utils.html import format_html
+from django.db.models import Count
 
 
 class CTCInline(admin.TabularInline):
@@ -57,3 +58,9 @@ class InterviewAdmin(admin.ModelAdmin):
         return format_html('<a target="_blank" href="{}">{}</a>', obj.candidate.cv.url, obj.time.strftime('%d %b %H:%M'))
 
     view_cv_link.short_description = "Time/CV"
+
+    def get_queryset(self, request):
+        qs = super(InterviewAdmin, self).get_queryset(request)
+        if request.user.has_perm('recruiting.can_list_all_records'):
+            return qs
+        return qs.filter(user=request.user)

@@ -8,7 +8,6 @@ from django.dispatch import receiver
 from model_utils import FieldTracker
 
 
-
 class Skill(models.Model):
     name = models.CharField(max_length=140)
 
@@ -47,7 +46,7 @@ class Candidate(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices = STATUS, default=1)
     refer_by = models.CharField(max_length=200, null=True, blank=True)
-    experience = models.IntegerField("experience in Year")
+    experience = models.FloatField("experience in Year")
     hr = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='candidate', null=True, blank=True)
@@ -64,9 +63,9 @@ class CTC(models.Model):
         Candidate, on_delete=models.CASCADE,
         related_name='ctc',
     )
-    current = models.IntegerField(default=0)
-    expected = models.IntegerField(default=0)
-    offered = models.IntegerField(default=0)
+    current = models.FloatField(default=0)
+    expected = models.FloatField(default=0)
+    offered = models.FloatField(default=0)
     notice = models.CharField(max_length=100)
     expected_doj = models.CharField(max_length=100)
 
@@ -90,19 +89,20 @@ class Interview(models.Model):
         on_delete=models.CASCADE, null=True, blank=True,
         related_name='interviews')
     remark = models.TextField("Put remark here", null=True, blank=True)
-    rating = models.IntegerField("Rating out of 10", null=True, blank=True)
-    experience = models.IntegerField("Evalution in year exp.", null=True, blank=True)
+    rating = models.FloatField("Rating out of 10", null=True, blank=True)
+    experience = models.FloatField("Evalution in year exp.", null=True, blank=True)
     tracker = FieldTracker()
 
     def __str__(self):
         return self.candidate.full_name
 
-
-
-
+    class Meta:
+        permissions = (
+            ('can_list_all_records', "User can see all interviews"),
+        )
 
 
 @receiver(post_save, sender=Candidate)
-def handle_new_job(sender,instance, **kwargs):
+def handle_new_job(sender, instance, **kwargs):
     if instance.tracker.has_changed('status'):
         send_sendgrid_mail(instance)
