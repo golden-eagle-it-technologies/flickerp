@@ -1,0 +1,69 @@
+{% extends 'flickerp/base.html' %}
+{% block page_title %}
+User Contracts
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#contract_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {%if contracts%}
+                    <h3 style="text-align:center;">Active Contracts</h3>
+                    <hr>
+                    <div class="table-responsive">
+                        <div class="form-group "> 
+                            <i class="fas fa-search " aria-hidden="true"></i>
+                            <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                        </div>
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>Reference Number</th>
+                            <th>Position</th>
+                            <th>Effective Date</th>
+                            <th>Expiry Date</th>
+                            <th>Risk</th>
+                            <th>Status</th>
+                            <th>Document</th>
+                            </thead>
+                            <tbody id="contract_list">
+                            {% for contract in contracts %}
+                            <tr>
+                                <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
+                                <td>{{contract.position|title}}</td>
+                                <td>{{contract.effective_date}}</td>
+                                <td>{{contract.expiry_date}}</td>
+                                <td>{{contract.risk|title}}</td>
+                                <td>{{contract.status|title}}</td>
+                                <td><a href="/media/{{contract.document}}">
+                                    <button>View</button>
+                                </a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {%else%}
+
+                    <h3>No active contracts available</h3>
+
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock content%}

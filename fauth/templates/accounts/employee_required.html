@@ -1,0 +1,23 @@
+{%extends 'flickerp/base.html'%}
+
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+Employee Required
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <center>
+                    <i class="material-icons">lock</i>
+                    <p>401 Unauthorized</p>
+                    <h2>No employee associated with this user account</h2>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

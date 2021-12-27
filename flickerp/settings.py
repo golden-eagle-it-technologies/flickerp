@@ -24,9 +24,28 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django.contrib.sites",
+    'django.contrib.humanize',
+    'javascript_settings',
+    'crispy_forms',
+    'widget_tweaks',
+    'config',
+    'fauth',
     'recruiting',
+    'recruitment',
+    'employees',
+    #'payroll',
+    'leave',
+    'organisation_details',
+    #'overtime',
+    'holidays',
+    'contracts',
+    #'learning_and_development',
+    #'training',
+    'notification',
+    'performance',
     'field_history',
     'task',
+
 ]
 
 MIDDLEWARE = [
@@ -44,7 +63,7 @@ ROOT_URLCONF = 'flickerp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

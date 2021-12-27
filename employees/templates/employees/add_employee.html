@@ -1,0 +1,43 @@
+{% extends './base.html'%}
+{% block page_title %}
+Edit {{employee.first_name}}'s Bio data
+{% endblock page_title%}
+{% load widget_tweaks %}
+
+
+{% block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card card-body">
+                    <form method="POST" action="{% url 'add_new_employee' %}">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="form-group">
+                            <label>{{field.label}}</label>
+                            {% if field.name in 'dob, start_date' %}
+                                {{ field|add_class:"form-control"|attr:"type:date" }}
+                            {% else %}
+                                {{ field|add_class:"form-control" }}
+                            {% endif %}
+                            
+                        </div>
+                        {% endfor %}
+                        <div class="modal-footer">
+                            <a href="{%url 'employees_page'%}">
+                                <button type="button"
+                                        class="btn btn-outline-danger">Back
+                                </button>
+                            </a>
+                            <button class="btn btn-danger" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
